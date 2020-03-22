@@ -1,14 +1,21 @@
 package com.cn.joewic.record_custom_view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.annotation.Nullable;
+
+public class MainActivity extends Activity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+    }
+
+    public void qqStep(View view) {
+        ViewActivity.launch(this, ViewActivity.TYPE_QQ_STEP);
     }
 }
