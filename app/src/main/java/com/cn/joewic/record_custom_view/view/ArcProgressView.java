@@ -10,7 +10,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-public class QQStepView extends View {
+public class ArcProgressView extends View {
 
     private Paint innerPaint;
     private Paint outterPaint;
@@ -21,19 +21,19 @@ public class QQStepView extends View {
     private int progress = 0;
     private int maxProgress = 3000;
 
-    public QQStepView(Context context) {
+    public ArcProgressView(Context context) {
         this(context, null);
     }
 
-    public QQStepView(Context context, @Nullable AttributeSet attrs) {
+    public ArcProgressView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public QQStepView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ArcProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, 0, 0);
     }
 
-    public QQStepView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ArcProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
@@ -58,20 +58,20 @@ public class QQStepView extends View {
 
     private void init() {
         innerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        innerPaint.setColor(Color.GREEN);
+        innerPaint.setColor(Color.parseColor("#FFB6C1"));
         innerPaint.setStrokeWidth(strokeWidth);
         innerPaint.setStrokeCap(Paint.Cap.ROUND);
         innerPaint.setStyle(Paint.Style.STROKE);
 
         outterPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        outterPaint.setColor(Color.RED);
+        outterPaint.setColor(Color.GRAY);
         outterPaint.setStrokeWidth(strokeWidth);
         outterPaint.setStrokeCap(Paint.Cap.ROUND);
         outterPaint.setStyle(Paint.Style.STROKE);
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setColor(Color.RED);
-        textPaint.setTextSize(28);
+        textPaint.setTextSize(40);
     }
 
     @Override
@@ -99,7 +99,13 @@ public class QQStepView extends View {
         canvas.drawArc(rectF, 150, ((float) ((float)progress / maxProgress)) * 240,
                 false, innerPaint);
 
-        canvas.drawText(String.valueOf(progress), getWidth() / 2, getHeight() / 2,
+        int centerX = getWidth() / 2;
+        Paint.FontMetrics fontMetrics =
+                textPaint.getFontMetrics();//获得画笔的FontMetrics，用来计算baseLine。因为drawText的y坐标，代表的是绘制的文字的baseLine的位置
+        int baselineY =
+                (int) ((getHeight() - fontMetrics.bottom - fontMetrics.top) / 2);//计算出在每格index区域，竖直居中的baseLine值
+        float textWidth = textPaint.measureText(String.valueOf(progress));
+        canvas.drawText(String.valueOf(progress), centerX - (textWidth / 2), baselineY,
                 textPaint);
 
     }

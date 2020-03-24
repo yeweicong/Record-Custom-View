@@ -10,13 +10,15 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
 
-import com.cn.joewic.record_custom_view.view.QQStepView;
+import com.cn.joewic.record_custom_view.view.ArcProgressView;
+import com.cn.joewic.record_custom_view.view.CircleProgressView;
 
 import androidx.annotation.Nullable;
 
 public class ViewActivity extends Activity {
 
-    public static final int TYPE_QQ_STEP = 1;
+    public static final int TYPE_ARC_STEP_PROGRESS = 1;
+    public static final int TYPE_CIRCLE_STEP_PROGRESS = 2;
     private FrameLayout containerLayout;
 
     public static void launch(Activity activity, int type){
@@ -40,31 +42,42 @@ public class ViewActivity extends Activity {
         int type = intent.getIntExtra("type", -1);
         View targetView = null;
         switch (type){
-            case TYPE_QQ_STEP:
-                targetView = new QQStepView(this);
-
+            case TYPE_ARC_STEP_PROGRESS:
+                targetView = new ArcProgressView(this);
+                break;
+            case TYPE_CIRCLE_STEP_PROGRESS:
+                targetView = new CircleProgressView(this);
                 break;
                 default:
                     break;
         }
 
         if(targetView != null){
+            FrameLayout.LayoutParams layoutParams
+                    = new FrameLayout.LayoutParams(500, 500);
+            targetView.setLayoutParams(layoutParams);
             containerLayout.addView(targetView);
         }
 
         afterAddView(type, targetView);
     }
 
+
+
     private void afterAddView(int type, final View view){
         switch (type){
-            case TYPE_QQ_STEP:
-                updateQQStep((QQStepView) view);
+            case TYPE_ARC_STEP_PROGRESS:
+                updateStepProgress((ArcProgressView) view);
                 break;
+            case TYPE_CIRCLE_STEP_PROGRESS:
+                break;
+                default:
+                    break;
         }
     }
 
-    private void updateQQStep(final QQStepView view) {
-        // 属性动画 后面讲的内容
+    private void updateStepProgress(final ArcProgressView view) {
+        // 属性动画
         ValueAnimator valueAnimator = ObjectAnimator.ofInt(0, 3000);
         valueAnimator.setDuration(1000);
         valueAnimator.setInterpolator(new DecelerateInterpolator());
