@@ -99,16 +99,18 @@ public class CircleProgressView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        RectF rectF = new RectF();
 
         int centerX = (getWidth() - (strokeWidth * 2)) / 2;
-        canvas.drawCircle(centerX, (getHeight() - (strokeWidth * 2)) / 2,
+        int centerY = (getHeight() - (strokeWidth * 2)) / 2;
+        canvas.drawCircle(centerX, centerY,
                 radius, outterPaint);
-//        canvas.drawArc(rectF, 150, 240, false, outterPaint);
 
 
-//        canvas.drawArc(rectF, 150, ((float) ((float)progress / maxProgress)) * 240,
-//                false, innerPaint);
+        RectF oval = new RectF(centerX - radius, centerY - radius,
+                centerX + radius, centerY + radius);
+
+        canvas.drawArc(oval, 90, (((float) ((float)progress / maxProgress)) * 180), false, innerPaint);
+        canvas.drawArc(oval, 90, -(((float) ((float)progress / maxProgress)) * 180), false, innerPaint);
 
         Paint.FontMetrics fontMetrics =
                 textPaint.getFontMetrics();//获得画笔的FontMetrics，用来计算baseLine。因为drawText的y坐标，代表的是绘制的文字的baseLine的位置

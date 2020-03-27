@@ -67,19 +67,35 @@ public class ViewActivity extends Activity {
     private void afterAddView(int type, final View view){
         switch (type){
             case TYPE_ARC_STEP_PROGRESS:
-                updateStepProgress((ArcProgressView) view);
+                updateArcProgress((ArcProgressView) view);
                 break;
             case TYPE_CIRCLE_STEP_PROGRESS:
+                updateCirProgress((CircleProgressView) view);
                 break;
                 default:
                     break;
         }
     }
 
-    private void updateStepProgress(final ArcProgressView view) {
+    private void updateArcProgress(final ArcProgressView view) {
         // 属性动画
         ValueAnimator valueAnimator = ObjectAnimator.ofInt(0, 3000);
-        valueAnimator.setDuration(1000);
+        valueAnimator.setDuration(5000);
+        valueAnimator.setInterpolator(new DecelerateInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int currentStep = (int) animation.getAnimatedValue();
+                view.setProgress(currentStep);
+            }
+        });
+        valueAnimator.start();
+    }
+
+    private void updateCirProgress(final CircleProgressView view) {
+        // 属性动画
+        ValueAnimator valueAnimator = ObjectAnimator.ofInt(0, 100);
+        valueAnimator.setDuration(5000);
         valueAnimator.setInterpolator(new DecelerateInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
