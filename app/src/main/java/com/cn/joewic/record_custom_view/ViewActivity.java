@@ -7,9 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 
+import com.cn.joewic.funny_check_view.TickView;
 import com.cn.joewic.record_custom_view.view.ArcProgressView;
 import com.cn.joewic.record_custom_view.view.CircleProgressView;
 
@@ -18,8 +19,8 @@ import androidx.annotation.Nullable;
 public class ViewActivity extends Activity {
 
     public static final int TYPE_ARC_STEP_PROGRESS = 1;
-    public static final int TYPE_CIRCLE_STEP_PROGRESS = 2;
-    private FrameLayout containerLayout;
+    public static final int TYPE_FINNY_CHECK_VIEW = 2;
+    private LinearLayout containerLayout;
 
     public static void launch(Activity activity, int type){
         Intent intent = new Intent(activity, ViewActivity.class);
@@ -40,41 +41,36 @@ public class ViewActivity extends Activity {
     private void dispatchIntent() {
         Intent intent = getIntent();
         int type = intent.getIntExtra("type", -1);
-        View targetView = null;
-        switch (type){
+        LinearLayout.LayoutParams layoutParams
+                = new LinearLayout.LayoutParams(500, 500);
+        switch (type) {
             case TYPE_ARC_STEP_PROGRESS:
-                targetView = new ArcProgressView(this);
+                View arcProgressView = new ArcProgressView(this);
+                View circleProgressView = new CircleProgressView(this);
+
+                arcProgressView.setLayoutParams(layoutParams);
+                circleProgressView.setLayoutParams(layoutParams);
+                containerLayout.addView(arcProgressView);
+                containerLayout.addView(circleProgressView);
+                afterAddView(arcProgressView, circleProgressView);
                 break;
-            case TYPE_CIRCLE_STEP_PROGRESS:
-                targetView = new CircleProgressView(this);
+
+            case TYPE_FINNY_CHECK_VIEW:
+                TickView funnyCheckView = new TickView(this);
+                funnyCheckView.setLayoutParams(layoutParams);
+                containerLayout.addView(funnyCheckView);
+
+                funnyCheckView.setChecked(true);
                 break;
-                default:
-                    break;
         }
 
-        if(targetView != null){
-            FrameLayout.LayoutParams layoutParams
-                    = new FrameLayout.LayoutParams(500, 500);
-            targetView.setLayoutParams(layoutParams);
-            containerLayout.addView(targetView);
-        }
-
-        afterAddView(type, targetView);
     }
 
 
 
-    private void afterAddView(int type, final View view){
-        switch (type){
-            case TYPE_ARC_STEP_PROGRESS:
-                updateArcProgress((ArcProgressView) view);
-                break;
-            case TYPE_CIRCLE_STEP_PROGRESS:
-                updateCirProgress((CircleProgressView) view);
-                break;
-                default:
-                    break;
-        }
+    private void afterAddView(View arcProgressView, final View circleProgressView){
+        updateArcProgress((ArcProgressView) arcProgressView);
+        updateCirProgress((CircleProgressView) circleProgressView);
     }
 
     private void updateArcProgress(final ArcProgressView view) {

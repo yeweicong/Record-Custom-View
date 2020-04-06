@@ -27,10 +27,10 @@ public class MainActivity extends Activity {
             }
         });
 
-        addButton("圆弧对称计步数", new View.OnClickListener() {
+        addButton("打钩控件", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewActivity.launch(MainActivity.this, ViewActivity.TYPE_CIRCLE_STEP_PROGRESS);
+                ViewActivity.launch(MainActivity.this, ViewActivity.TYPE_FINNY_CHECK_VIEW);
             }
         });
     }

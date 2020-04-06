@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':funny_check_view'
 rootProject.name='Record-Custom-View'
